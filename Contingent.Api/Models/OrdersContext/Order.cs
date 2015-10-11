@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Contingent.Api.Models
+namespace Contingent.Api.Models.OrdersContext
 {
     public class Order
     {

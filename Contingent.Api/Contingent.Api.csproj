@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -104,8 +108,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Order.cs" />
-    <Compile Include="Models\Proposal.cs" />
+    <Compile Include="Models\OrdersContext\Action.cs" />
+    <Compile Include="Models\OrdersContext\Order.cs" />
+    <Compile Include="Models\OrdersContext\Proposal.cs" />
+    <Compile Include="Models\OrdersContext\Reason.cs" />
+    <Compile Include="Models\OrdersContext\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\SchedulerClient.cs" />
   </ItemGroup>
@@ -114,6 +121,11 @@
       <Project>{a6713016-84bb-4756-a501-93f080d43a93}</Project>
       <Name>Contingent.Scheduler.Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataAccess\" />
+    <Folder Include="Models\EducationPlansContext\" />
+    <Folder Include="Models\StudentsContext\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
