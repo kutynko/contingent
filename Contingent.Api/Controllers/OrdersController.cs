@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 using Contingent.Api.Models;
+using Contingent.Api.Models.OrdersContext;
 
 namespace Contingent.Api.Controllers
 {
