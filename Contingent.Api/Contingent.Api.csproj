@@ -61,6 +61,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -105,6 +106,7 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProposalsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="DataAccess\ProposalsRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -114,7 +116,7 @@
     <Compile Include="Models\OrdersContext\Reason.cs" />
     <Compile Include="Models\OrdersContext\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scheduler\SchedulerClient.cs" />
+    <Compile Include="Scheduler\SchedulerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contingent.Scheduler.Contracts\Contingent.Scheduler.Contracts.csproj">
@@ -123,7 +125,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataAccess\" />
     <Folder Include="Models\EducationPlansContext\" />
     <Folder Include="Models\StudentsContext\" />
   </ItemGroup>

@@ -15,7 +15,7 @@ namespace Contingent.Api.Controllers
         private static List<Proposal> _data = new List<Proposal>();
 
         [Route]
-        [ResponseType(typeof(Proposal))]
+        [ResponseType(typeof(Proposal[]))]
         [HttpGet]
         public IHttpActionResult Get()
         {
