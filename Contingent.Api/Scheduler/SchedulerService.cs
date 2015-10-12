@@ -6,14 +6,14 @@ namespace Contingent.Api.Scheduler
 {
     public class SchedulerService: ClientBase<IScheduler>, IScheduler
     {
-        public void Process(Order data)
+        public void Process(string data)
         {
             
 
             Channel.Process(data.ToString());
         }
 
-        public void Undo(Order order)
+        public void Undo(string order)
         {
 
         }

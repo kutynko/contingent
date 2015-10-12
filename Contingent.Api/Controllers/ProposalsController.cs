@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Contingent.Api.DataAccess;
 using Contingent.Api.Models.OrdersContext;
 
 namespace Contingent.Api.Controllers
@@ -12,22 +12,26 @@ namespace Contingent.Api.Controllers
     [RoutePrefix("api/proposals")]
     public class ProposalsController : ApiController
     {
-        private static List<Proposal> _data = new List<Proposal>();
+        private static ProposalsRepository _db = new ProposalsRepository();
 
         [Route]
         [ResponseType(typeof(Proposal[]))]
         [HttpGet]
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get()
         {
-            return Ok(_data.ToArray());
+            return Ok((await _db.GetAll()).ToArray());
         }
 
-        [Route("{id:int}", Name = "Proposal")]
+        [Route("{id:guid}", Name = "Proposal")]
         [ResponseType(typeof(Proposal))]
         [HttpGet]
-        public IHttpActionResult Get(int id)
+        public async Task<IHttpActionResult> Get(Guid id)
         {
-            var result = _data.SingleOrDefault(p => p.Id == id);
+            var result = await _db.GetById(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
 
             return Ok(result);
         }
@@ -35,55 +39,60 @@ namespace Contingent.Api.Controllers
         [Route]
         [ResponseType(typeof(Proposal))]
         [HttpPost]
-        public IHttpActionResult Post(Proposal data)
+        public async Task<IHttpActionResult> Post(Proposal data)
         {
-            if (data.Actions == null || data.Actions.Count == 0)
+            if (data.CreatedOn == DateTime.MinValue)
             {
-                return StatusCode(HttpStatusCode.Forbidden);
+                data.CreatedOn = DateTime.Now;
             }
 
-            data.Id = _data.Max(p => p.Id) + 1;
-            _data.Add(data);
+            Validate(data);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            data.Id = Guid.NewGuid();
+            
+            await _db.Insert(data);
 
             return CreatedAtRoute("Proposal", new { id = data.Id }, data);
         }
 
-        [Route("{id:int}")]
+        [Route("{id:guid}")]
         [ResponseType(typeof(Proposal))]
         [HttpPut]
-        public IHttpActionResult Put(int id, Proposal data)
+        public async Task<IHttpActionResult> Put(Guid id, Proposal data)
         {
-            if (data.Actions == null || data.Actions.Count == 0)
+            data.Id = id;
+            Validate(data);
+            if (!ModelState.IsValid)
             {
-                return StatusCode(HttpStatusCode.Forbidden);
+                return BadRequest(ModelState);
             }
 
-            var target = _data.SingleOrDefault(d => d.Id == data.Id);
-
-            if (target == null)
+            var recordsUpdated = await _db.Update(data);
+            
+            if (recordsUpdated == 0)
             {
-                data.Id = id;
-                _data.Add(data);
+                await _db.Insert(data);
                 return CreatedAtRoute("Proposal", new { id = id }, data);
             }
 
-            target.Actions = data.Actions;
-            target.Reasons = data.Reasons;
-            target.Status = data.Status;
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        [Route("{id:int}")]
+        [Route("{id:guid}")]
         [HttpDelete]
-        public IHttpActionResult Delete(int id)
+        public async Task<IHttpActionResult> Delete(Guid id)
         {
-            var target = _data.SingleOrDefault(d => d.Id == id);
-            if (target == null)
+            var recordsDeleted = await _db.Delete(id);
+
+            if (recordsDeleted == 0)
             {
                 return NotFound();
             }
 
-            _data.Remove(target);
             return StatusCode(HttpStatusCode.NoContent);
         }
     }

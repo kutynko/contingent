@@ -42,7 +42,7 @@ namespace Contingent.Api.Controllers
         [Route]
         [ResponseType(typeof(Order))]
         [HttpPost]
-        public IHttpActionResult Post(int proposalId, string refNumber, string signedBy)
+        public IHttpActionResult Post(Guid proposalId, string refNumber, string signedBy)
         {
             var proposal = _proposals.Single(p => p.Id == proposalId);
             if (proposal.Status != 1)
@@ -62,14 +62,14 @@ namespace Contingent.Api.Controllers
                 SignedBy = signedBy
             };
 
-            _scheduler.Process(result);
+            _scheduler.Process(result.ToString());
 
             return CreatedAtRoute("Order", new { id = result.Id }, result);
         }
 
-        [Route("{id:int}")]
+        [Route("{id:guid}")]
         //[RequirePermission(Permissions.UndoOrders)]
-        public IHttpActionResult Delete(int id)
+        public IHttpActionResult Delete(Guid id)
         {
             var target = _orders.SingleOrDefault(o => o.Id == id);
             if (target == null)
@@ -78,7 +78,7 @@ namespace Contingent.Api.Controllers
             }
 
             _orders.Remove(target);
-            _scheduler.Undo(target);
+            _scheduler.Undo(target.ToString());
 
             return StatusCode(HttpStatusCode.NoContent);
         }
