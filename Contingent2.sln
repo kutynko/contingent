@@ -29,6 +29,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Contingent.WebUI", "Conting
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "51160"
+		SlnRelativePath = "Contingent.WebUI\"
 	EndProjectSection
 EndProject
 Global
