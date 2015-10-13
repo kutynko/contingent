@@ -31,8 +31,7 @@ namespace Contingent.Api.DataAccess
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
             {
-                await connection.ExecuteAsync("insert into Proposals(Id, Status, CreatedBy, CreatedOn) values(@id, @status, @createdBy, @createdOn);",
-                    new { id = item.Id, status = item.Status, createdBy = item.CreatedBy, createdOn = item.CreatedOn });
+                await connection.ExecuteAsync("insert into Proposals(Id, Status, CreatedBy, CreatedOn) values(@id, @status, @createdBy, @createdOn);", item);
             }
         }
 
@@ -40,8 +39,7 @@ namespace Contingent.Api.DataAccess
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
             {
-                return await connection.ExecuteAsync("update Proposals set Status=@status, CreatedBy=@createdBy, CreatedOn=@createdOn where Id=@id;",
-                    new { id = item.Id, status = item.Status, createdBy = item.CreatedBy, createdOn = item.CreatedOn });
+                return await connection.ExecuteAsync("update Proposals set Status=@status, CreatedBy=@createdBy, CreatedOn=@createdOn where Id=@id;", item);
             }
         }
 
