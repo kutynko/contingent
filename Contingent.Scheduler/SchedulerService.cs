@@ -9,7 +9,12 @@ namespace Contingent.Scheduler
 {
     class SchedulerService : IScheduler
     {
-        public void Add(string data)
+        public void Process(string data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Undo(string data)
         {
             throw new NotImplementedException();
         }

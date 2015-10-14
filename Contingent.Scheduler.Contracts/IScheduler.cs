@@ -2,6 +2,8 @@
 {
     public interface IScheduler
     {
-        void Add(string data);
+        void Process(string data);
+
+        void Undo(string data);
     }
 }
