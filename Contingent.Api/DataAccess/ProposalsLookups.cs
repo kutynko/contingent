@@ -51,5 +51,18 @@ namespace Contingent.Api.DataAccess
                 });
             }
         }
+
+        public async Task<IEnumerable<Reason>> GetReasons()
+        {
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
+            {
+                return (await connection.QueryAsync("select Id, Description, Fields from Reasons")).Select(a => new Reason
+                {
+                    Id = a.Id,
+                    Description = a.Description,
+                    Fields = XDocument.Parse((string)a.Fields).Descendants(XName.Get("Field", "")).Select(e => new Reason.Field(e.Attribute(XName.Get("caption", "")).Value, e.Attribute(XName.Get("type", "")).Value)).ToArray()
+                });
+            }
+        }
     }
 }
