@@ -28,6 +28,16 @@ namespace Contingent.Api.DataAccess
             };
         }
 
+        public IEnumerable<Profession> GetProfessions()
+        {
+            return new[]
+            {
+                new Profession { Id=Guid.Parse("2061c5a7-256a-4ac1-9cf7-1a1bfc267fcf"), Code="1 36 00 01", Name="Строительные, дорожные машины и оборудование" },
+                new Profession { Id=Guid.Parse("7ec9c2ab-eef1-404d-8110-c4ef7025ac19"), Code="1 36 00 02", Name="Строительные, дорожные машины и оборудование" },
+                new Profession { Id=Guid.Parse("13156762-248f-477d-89bc-c0147be4166d"), Code="1 36 00 03", Name="Строительные, дорожные машины и оборудование" }
+            };
+        }
+
         public async Task<IEnumerable<Action>> GetActions()
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
@@ -37,7 +47,7 @@ namespace Contingent.Api.DataAccess
                     Id = a.Id,
                     Description = a.Description,
                     IsButch = a.IsButch,
-                    Fields = XDocument.Parse(a.Fields).Elements().Select((Func<XElement, Action.Field>)(e => new Action.Field(e.Attribute(XName.Get("caption", "")).Value, e.Attribute(XName.Get("type", "")).Value))).ToArray()
+                    Fields = XDocument.Parse((string)a.Fields).Descendants(XName.Get("Field", "")).Select(e => new Action.Field(e.Attribute(XName.Get("caption", "")).Value, e.Attribute(XName.Get("type", "")).Value)).ToArray()
                 });
             }
         }
