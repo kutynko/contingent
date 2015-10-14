@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Description{ get; set; }
-        public bool IsButch { get; set; }
+        public bool IsBatch { get; set; }
         public Field[] Fields { get; set; }
 
         public struct Field

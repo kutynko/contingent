@@ -42,11 +42,11 @@ namespace Contingent.Api.DataAccess
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
             {
-                return (await connection.QueryAsync("select Id, Description, Fields, IsButch from Actions")).Select(a => new Action
+                return (await connection.QueryAsync("select Id, Description, Fields, IsBatch from Actions")).Select(a => new Action
                 {
                     Id = a.Id,
                     Description = a.Description,
-                    IsButch = a.IsButch,
+                    IsBatch = a.IsBatch,
                     Fields = XDocument.Parse((string)a.Fields).Descendants(XName.Get("Field", "")).Select(e => new Action.Field(e.Attribute(XName.Get("caption", "")).Value, e.Attribute(XName.Get("type", "")).Value)).ToArray()
                 });
             }

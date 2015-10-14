@@ -132,6 +132,7 @@
     <Build Include="Stored Procedures\GetLookups.sql" />
     <Build Include="Tables\Actions.sql" />
     <Build Include="Tables\Proposals.sql" />
+    <Build Include="Tables\Reasons.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Data.sql" />
