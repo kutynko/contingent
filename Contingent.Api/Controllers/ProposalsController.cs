@@ -7,6 +7,8 @@ using System.Web.Http.Description;
 using Contingent.Api.DataAccess;
 using Contingent.Api.Models.OrdersContext;
 
+using Action = Contingent.Api.Models.OrdersContext.Action;
+
 namespace Contingent.Api.Controllers
 {
     [RoutePrefix("api/proposals")]
@@ -94,6 +96,21 @@ namespace Contingent.Api.Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        [Route("students")]
+        [ResponseType(typeof(Student[]))]
+        [HttpGet]
+        public IHttpActionResult GetStudents()
+        {
+            return Ok(new ProposalsLookups().GetStudents());
+        }
+
+        [Route("actions")]
+        [ResponseType(typeof(Action[]))]
+        public async Task<IHttpActionResult> GetActions()
+        {
+            return Ok(await new ProposalsLookups().GetActions());
         }
     }
 }
