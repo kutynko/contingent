@@ -98,6 +98,8 @@ namespace Contingent.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        #region Lookups
+
         [Route("students")]
         [ResponseType(typeof(Student[]))]
         [HttpGet]
@@ -112,5 +114,14 @@ namespace Contingent.Api.Controllers
         {
             return Ok(await new ProposalsLookups().GetActions());
         }
+
+        [Route("reasons")]
+        [ResponseType(typeof(Reason[]))]
+        public async Task<IHttpActionResult> GetReasons()
+        {
+            return Ok(await new ProposalsLookups().GetReasons());
+        } 
+
+        #endregion
     }
 }
