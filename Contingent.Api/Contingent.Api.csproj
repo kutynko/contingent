@@ -108,6 +108,7 @@
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="DataAccess\ProposalsLookups.cs" />
     <Compile Include="DataAccess\ProposalsRepository.cs" />
+    <Compile Include="Dtos\Proposals\ProposalDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -119,6 +120,7 @@
     <Compile Include="Models\OrdersContext\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\SchedulerService.cs" />
+    <Compile Include="Validation\NumberOfElementsAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contingent.Scheduler.Contracts\Contingent.Scheduler.Contracts.csproj">
