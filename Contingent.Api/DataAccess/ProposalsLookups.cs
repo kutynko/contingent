@@ -4,8 +4,6 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using System.Xml.Linq;
 using Contingent.Api.Models.OrdersContext;
 using Dapper;
 
@@ -47,7 +45,7 @@ namespace Contingent.Api.DataAccess
                     Id = a.Id,
                     Description = a.Description,
                     IsBatch = a.IsBatch,
-                    Fields = ReadFieldsFromXml((string)a.Fields).Select(f => new Action.Field(f.Item1, f.Item2)).ToArray()
+                    Fields = FieldsXmlHelpers.FieldInfoFromXml((string)a.Fields).ToArray()
                 });
             }
         }
@@ -60,19 +58,10 @@ namespace Contingent.Api.DataAccess
                 {
                     Id = a.Id,
                     Description = a.Description,
-                    Fields = ReadFieldsFromXml((string)a.Fields).Select(f => new Reason.Field(f.Item1, f.Item2)).ToArray()
+                    Fields = FieldsXmlHelpers.FieldInfoFromXml((string)a.Fields).ToArray()
                 });
             }
         }
 
-        private static IEnumerable<Tuple<string, string>> ReadFieldsFromXml(string dbValue)
-        {
-            if (string.IsNullOrEmpty(dbValue))
-            {
-                return Enumerable.Empty<Tuple<string, string>>();
-            }
-
-            return XDocument.Parse(dbValue).Descendants(XName.Get("Field", "")).Select(e => new Tuple<string, string>(e.Attribute(XName.Get("caption", "")).Value, e.Attribute(XName.Get("type", "")).Value));
-        }
     }
 }

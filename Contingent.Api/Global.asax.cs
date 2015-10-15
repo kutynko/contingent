@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Http;
+using Newtonsoft.Json.Serialization;
 
 namespace Contingent.Api
 {
@@ -10,7 +11,8 @@ namespace Contingent.Api
             GlobalConfiguration.Configure(config =>
             {
                 config.MapHttpAttributeRoutes();
-                //config.Routes.MapHttpRoute("", "api/v1/{controller}/{id:int?}");
+
+                var formatters = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
         }
     }

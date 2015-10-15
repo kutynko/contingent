@@ -133,6 +133,9 @@
     <Build Include="Tables\Actions.sql" />
     <Build Include="Tables\Proposals.sql" />
     <Build Include="Tables\Reasons.sql" />
+    <Build Include="Tables\Proposals_2_Students.sql" />
+    <Build Include="Tables\Proposals_2_Actions.sql" />
+    <Build Include="Tables\Proposals_2_Reasons.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Data.sql" />

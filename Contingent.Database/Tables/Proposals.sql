@@ -4,6 +4,6 @@
 	Status int,
 	CreatedBy nvarchar(100) not null,
 	CreatedOn datetime2 not null,
-
-	constraint PK_Proposals primary key clustered (Id asc)
+	UpdatedOn datetime2 not null,
+    constraint PK_Proposals primary key clustered (Id asc)
 )

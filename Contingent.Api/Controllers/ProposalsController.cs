@@ -17,7 +17,7 @@ namespace Contingent.Api.Controllers
         private static ProposalsRepository _db = new ProposalsRepository();
 
         [Route]
-        [ResponseType(typeof(Proposal[]))]
+        [ResponseType(typeof(ProposalReadModel[]))]
         [HttpGet]
         public async Task<IHttpActionResult> Get()
         {
@@ -25,7 +25,7 @@ namespace Contingent.Api.Controllers
         }
 
         [Route("{id:guid}", Name = "Proposal")]
-        [ResponseType(typeof(Proposal))]
+        [ResponseType(typeof(ProposalReadModel))]
         [HttpGet]
         public async Task<IHttpActionResult> Get(Guid id)
         {
@@ -39,46 +39,37 @@ namespace Contingent.Api.Controllers
         }
 
         [Route]
-        [ResponseType(typeof(Proposal))]
+        [ResponseType(typeof(ProposalReadModel))]
         [HttpPost]
-        public async Task<IHttpActionResult> Post(Proposal data)
+        public async Task<IHttpActionResult> Post(ProposalEditModel data)
         {
-            if (data.CreatedOn == DateTime.MinValue)
-            {
-                data.CreatedOn = DateTime.Now;
-            }
-
-            Validate(data);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            data.Id = Guid.NewGuid();
-            
-            await _db.Insert(data);
+            var id = Guid.NewGuid();
+            await _db.Insert(id, data);
 
-            return CreatedAtRoute("Proposal", new { id = data.Id }, data);
+            return CreatedAtRoute("Proposal", new { id = id }, await _db.GetById(id));
         }
 
         [Route("{id:guid}")]
-        [ResponseType(typeof(Proposal))]
+        [ResponseType(typeof(ProposalReadModel))]
         [HttpPut]
-        public async Task<IHttpActionResult> Put(Guid id, Proposal data)
+        public async Task<IHttpActionResult> Put(Guid id, ProposalEditModel data)
         {
-            data.Id = id;
-            Validate(data);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var recordsUpdated = await _db.Update(data);
+            var recordsUpdated = await _db.Update(id, data);
             
             if (recordsUpdated == 0)
             {
-                await _db.Insert(data);
-                return CreatedAtRoute("Proposal", new { id = id }, data);
+                await _db.Insert(id, data);
+                return CreatedAtRoute("Proposal", new { id = id }, await _db.GetById(id));
             }
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -98,6 +89,8 @@ namespace Contingent.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        #region Lookups
+
         [Route("students")]
         [ResponseType(typeof(Student[]))]
         [HttpGet]
@@ -112,5 +105,14 @@ namespace Contingent.Api.Controllers
         {
             return Ok(await new ProposalsLookups().GetActions());
         }
+
+        [Route("reasons")]
+        [ResponseType(typeof(Reason[]))]
+        public async Task<IHttpActionResult> GetReasons()
+        {
+            return Ok(await new ProposalsLookups().GetReasons());
+        } 
+
+        #endregion
     }
 }
