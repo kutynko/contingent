@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Contingent.Api.Models.OrdersContext
 {
-    public class Proposal
+    public class ProposalReadModel
     {
         public Guid Id { get; set; }
         public int Status { get; set; }

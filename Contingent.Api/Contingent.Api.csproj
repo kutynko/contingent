@@ -108,14 +108,14 @@
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="DataAccess\ProposalsLookups.cs" />
     <Compile Include="DataAccess\ProposalsRepository.cs" />
-    <Compile Include="Dtos\Proposals\ProposalDto.cs" />
+    <Compile Include="Models\OrdersContext\ProposalEditModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\OrdersContext\Action.cs" />
     <Compile Include="Models\OrdersContext\Order.cs" />
     <Compile Include="Models\OrdersContext\Profession.cs" />
-    <Compile Include="Models\OrdersContext\Proposal.cs" />
+    <Compile Include="Models\OrdersContext\ProposalReadModel.cs" />
     <Compile Include="Models\OrdersContext\Reason.cs" />
     <Compile Include="Models\OrdersContext\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Contingent.Api.Validation;
 
-namespace Contingent.Api.Dtos.Proposals
+namespace Contingent.Api.Models.OrdersContext
 {
-    public class ProposalDto
+    public class ProposalEditModel
     {
         [Required]
         [NumberOfElements(AtLeast = 1)]
@@ -22,13 +22,13 @@ namespace Contingent.Api.Dtos.Proposals
         public class Action
         {
             public int Id { get; set; }
-            public List<object> FieldValues { get; set; }
+            public List<string> FieldValues { get; set; }
         }
 
         public class Reason
         {
             public int Id { get; set; }
-            public List<object> FieldValues { get; set; }
+            public List<string> FieldValues { get; set; }
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Contingent.Api.Dtos.Proposals;
 using Contingent.Api.Models.OrdersContext;
 using Dapper;
 
@@ -13,23 +12,23 @@ namespace Contingent.Api.DataAccess
 {
     public class ProposalsRepository
     {
-        public async Task<IEnumerable<Proposal>> GetAll()
+        public async Task<IEnumerable<ProposalReadModel>> GetAll()
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
             {
-                return await connection.QueryAsync<Proposal>("select Id, Status, CreatedBy, CreatedOn from Proposals;");
+                return await connection.QueryAsync<ProposalReadModel>("select Id, Status, CreatedBy, CreatedOn from Proposals;");
             }
         }
 
-        public async Task<Proposal> GetById(Guid id)
+        public async Task<ProposalReadModel> GetById(Guid id)
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
             {
-                return (await connection.QueryAsync<Proposal>("select Id, Status, CreatedBy, CreatedOn from Proposals where Id=@id;", new { id = id })).FirstOrDefault();
+                return (await connection.QueryAsync<ProposalReadModel>("select Id, Status, CreatedBy, CreatedOn from Proposals where Id=@id;", new { id = id })).FirstOrDefault();
             }
         }
 
-        public async Task Insert(Guid id, ProposalDto item)
+        public async Task Insert(Guid id, ProposalEditModel item)
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
             {
@@ -47,7 +46,7 @@ namespace Contingent.Api.DataAccess
             }
         }
 
-        public async Task<int> Update(Guid id, ProposalDto item)
+        public async Task<int> Update(Guid id, ProposalEditModel item)
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
             {

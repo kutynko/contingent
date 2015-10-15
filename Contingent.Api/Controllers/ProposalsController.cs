@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Contingent.Api.DataAccess;
-using Contingent.Api.Dtos.Proposals;
 using Contingent.Api.Models.OrdersContext;
 
 using Action = Contingent.Api.Models.OrdersContext.Action;
@@ -18,7 +17,7 @@ namespace Contingent.Api.Controllers
         private static ProposalsRepository _db = new ProposalsRepository();
 
         [Route]
-        [ResponseType(typeof(Proposal[]))]
+        [ResponseType(typeof(ProposalReadModel[]))]
         [HttpGet]
         public async Task<IHttpActionResult> Get()
         {
@@ -26,7 +25,7 @@ namespace Contingent.Api.Controllers
         }
 
         [Route("{id:guid}", Name = "Proposal")]
-        [ResponseType(typeof(Proposal))]
+        [ResponseType(typeof(ProposalReadModel))]
         [HttpGet]
         public async Task<IHttpActionResult> Get(Guid id)
         {
@@ -40,9 +39,9 @@ namespace Contingent.Api.Controllers
         }
 
         [Route]
-        [ResponseType(typeof(Proposal))]
+        [ResponseType(typeof(ProposalReadModel))]
         [HttpPost]
-        public async Task<IHttpActionResult> Post(ProposalDto data)
+        public async Task<IHttpActionResult> Post(ProposalEditModel data)
         {
             if (!ModelState.IsValid)
             {
@@ -56,9 +55,9 @@ namespace Contingent.Api.Controllers
         }
 
         [Route("{id:guid}")]
-        [ResponseType(typeof(Proposal))]
+        [ResponseType(typeof(ProposalReadModel))]
         [HttpPut]
-        public async Task<IHttpActionResult> Put(Guid id, ProposalDto data)
+        public async Task<IHttpActionResult> Put(Guid id, ProposalEditModel data)
         {
             if (!ModelState.IsValid)
             {

@@ -13,7 +13,7 @@ namespace Contingent.Api.Controllers
     public class OrdersController : ApiController
     {
         private static readonly List<Order> _orders = new List<Order>();
-        private static readonly List<Proposal> _proposals = new List<Proposal>();
+        private static readonly List<ProposalReadModel> _proposals = new List<ProposalReadModel>();
         private static readonly SchedulerService _scheduler = new SchedulerService();
 
 
