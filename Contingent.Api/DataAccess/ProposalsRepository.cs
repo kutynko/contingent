@@ -4,6 +4,8 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using Contingent.Api.Dtos.Proposals;
 using Contingent.Api.Models.OrdersContext;
 using Dapper;
 
@@ -27,15 +29,25 @@ namespace Contingent.Api.DataAccess
             }
         }
 
-        public async Task Insert(Proposal item)
+        public async Task Insert(Guid id, ProposalDto item)
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
             {
-                await connection.ExecuteAsync("insert into Proposals(Id, Status, CreatedBy, CreatedOn) values(@id, @status, @createdBy, @createdOn);", item);
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    var proposal =  connection.ExecuteAsync("insert into Proposals(Id, Status, CreatedBy) values(@id, 0, @createdBy);", new { id = id, createdBy = "user" }, transaction);
+                    var students =  connection.ExecuteAsync("insert into Proposals_2_Students(ProposalId, StudentId) values(@proposalId, @studentId);", item.Students.Select(s => new { proposalId = id, studentId = s }), transaction);
+                    var actions = connection.ExecuteAsync("insert into Proposals_2_Actions(ProposalId, ActionId, [Values]) values(@proposalId, @actionId, @values);", item.Actions.Select(a => new { proposalId = id, actionId = a.Id, values = FormatFieldValuesToXml(a.FieldValues) }), transaction);
+                    var reasons = connection.ExecuteAsync("insert into Proposals_2_Reasons(ProposalId, ReasonId, [Values]) values(@proposalId, @reasonId, @values);", item.Reasons.Select(r => new { proposalId = id, reasonId = r.Id, values = FormatFieldValuesToXml(r.FieldValues) }), transaction);
+
+                    await Task.WhenAll(proposal, students, actions, reasons);
+                    transaction.Commit();
+                }
             }
         }
 
-        public async Task<int> Update(Proposal item)
+        public async Task<int> Update(Guid id, ProposalDto item)
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
             {
@@ -49,6 +61,13 @@ namespace Contingent.Api.DataAccess
             {
                 return await connection.ExecuteAsync("delete from Proposals where Id=@id;", new { id = id });
             }
+        }
+
+        private static string FormatFieldValuesToXml(List<object> fields)
+        {
+            var result = new XElement("Values");
+            result.Add(fields.Select(v => new XElement("Value", v, new XAttribute("field", "1"))));
+            return result.ToString();
         }
     }
 }

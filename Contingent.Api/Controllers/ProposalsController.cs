@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Contingent.Api.DataAccess;
+using Contingent.Api.Dtos.Proposals;
 using Contingent.Api.Models.OrdersContext;
 
 using Action = Contingent.Api.Models.OrdersContext.Action;
@@ -41,44 +42,35 @@ namespace Contingent.Api.Controllers
         [Route]
         [ResponseType(typeof(Proposal))]
         [HttpPost]
-        public async Task<IHttpActionResult> Post(Proposal data)
+        public async Task<IHttpActionResult> Post(ProposalDto data)
         {
-            if (data.CreatedOn == DateTime.MinValue)
-            {
-                data.CreatedOn = DateTime.Now;
-            }
-
-            Validate(data);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            data.Id = Guid.NewGuid();
-            
-            await _db.Insert(data);
+            var id = Guid.NewGuid();
+            await _db.Insert(id, data);
 
-            return CreatedAtRoute("Proposal", new { id = data.Id }, data);
+            return CreatedAtRoute("Proposal", new { id = id }, await _db.GetById(id));
         }
 
         [Route("{id:guid}")]
         [ResponseType(typeof(Proposal))]
         [HttpPut]
-        public async Task<IHttpActionResult> Put(Guid id, Proposal data)
+        public async Task<IHttpActionResult> Put(Guid id, ProposalDto data)
         {
-            data.Id = id;
-            Validate(data);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var recordsUpdated = await _db.Update(data);
+            var recordsUpdated = await _db.Update(id, data);
             
             if (recordsUpdated == 0)
             {
-                await _db.Insert(data);
-                return CreatedAtRoute("Proposal", new { id = id }, data);
+                await _db.Insert(id, data);
+                return CreatedAtRoute("Proposal", new { id = id }, await _db.GetById(id));
             }
 
             return StatusCode(HttpStatusCode.NoContent);

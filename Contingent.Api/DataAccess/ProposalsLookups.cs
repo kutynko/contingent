@@ -72,7 +72,7 @@ namespace Contingent.Api.DataAccess
                 return Enumerable.Empty<Tuple<string, string>>();
             }
 
-            return XDocument.Parse(dbValue).Descendants(XName.Get("Field", "")).Select(e => new Tuple<string, string>(e.Attribute(XName.Get("caption", "")).Value, e.Attribute(XName.Get("type", "")).Value));
+            return XDocument.Parse(dbValue).Descendants("Field").Select(e => new Tuple<string, string>(e.Attribute("caption").Value, e.Attribute("type").Value));
         }
     }
 }
