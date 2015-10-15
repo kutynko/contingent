@@ -47,7 +47,7 @@ namespace Contingent.Api.DataAccess
                     Id = a.Id,
                     Description = a.Description,
                     IsBatch = a.IsBatch,
-                    Fields = ReadFieldsFromXml((string)a.Fields).Select(f => new Action.Field(f.Item1, f.Item2)).ToArray()
+                    Fields = ReadFieldsFromXml((string)a.Fields).Select(f => new Action.Field(f.Item1, f.Item2, f.Item3)).ToArray()
                 });
             }
         }
@@ -60,19 +60,19 @@ namespace Contingent.Api.DataAccess
                 {
                     Id = a.Id,
                     Description = a.Description,
-                    Fields = ReadFieldsFromXml((string)a.Fields).Select(f => new Reason.Field(f.Item1, f.Item2)).ToArray()
+                    Fields = ReadFieldsFromXml((string)a.Fields).Select(f => new Reason.Field(f.Item1, f.Item2, f.Item3)).ToArray()
                 });
             }
         }
 
-        private static IEnumerable<Tuple<string, string>> ReadFieldsFromXml(string dbValue)
+        private static IEnumerable<Tuple<string, string, string>> ReadFieldsFromXml(string dbValue)
         {
             if (string.IsNullOrEmpty(dbValue))
             {
-                return Enumerable.Empty<Tuple<string, string>>();
+                return Enumerable.Empty<Tuple<string, string, string>>();
             }
 
-            return XDocument.Parse(dbValue).Descendants("Field").Select(e => new Tuple<string, string>(e.Attribute("caption").Value, e.Attribute("type").Value));
+            return XDocument.Parse(dbValue).Descendants("Field").Select(e => new Tuple<string, string, string>(e.Attribute("id").Value, e.Attribute("caption").Value, e.Attribute("type").Value));
         }
     }
 }

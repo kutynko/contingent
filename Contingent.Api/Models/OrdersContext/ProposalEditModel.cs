@@ -22,13 +22,13 @@ namespace Contingent.Api.Models.OrdersContext
         public class Action
         {
             public int Id { get; set; }
-            public List<string> FieldValues { get; set; }
+            public Dictionary<string, string> FieldValues { get; set; }
         }
 
         public class Reason
         {
             public int Id { get; set; }
-            public List<string> FieldValues { get; set; }
+            public Dictionary<string, string> FieldValues { get; set; }
         }
     }
 }

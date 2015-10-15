@@ -51,7 +51,7 @@ insert into dbo.Actions(Id, [Description], IsBatch, Fields) values
 	(1, N'Назначение паспортных данных', 1, N''),
 	(2, N'Изменение паспортных данных', 1, N''),
 	(3, N'Подача документов абитуриентом', 1, N''),
-	(4, N'Зачислить как успешно сдавшего вступительные испытания', 1, N'<Fields><Field caption="Коментарий" type="System.String" /><Field caption="Специальность" type="Contingent.Lookup[Contingent.Profession]" /><Field caption="Зачислить с" type="System.Datetime" /></Fields>'),
+	(4, N'Зачислить как успешно сдавшего вступительные испытания', 1, N'<Fields><Field id="1" caption="Коментарий" type="System.String" /><Field id="2" caption="Специальность" type="Contingent.Lookup[Contingent.Profession]" /><Field id="3" caption="Зачислить с" type="System.Datetime" /></Fields>'),
 	(5, N'Перевести с другой специальности', 1, N''),
 	(6, N'Отчислить по академической неуспеваемости', 1, N''),
 	(7, N'Отчислить по собственному желанию', 1, N''),
@@ -96,7 +96,7 @@ set IDENTITY_INSERT dbo.Actions off
 set IDENTITY_INSERT dbo.Reasons on
 insert into dbo.Reasons(Id, [Description], Fields) values
 	(1, N'Заявление', N''),
-	(2, N'Представление', N'<Fields><Field caption="Коментарий" type="System.String" /><Field caption="Номер" type="System.String" /><Field caption="От" type="System.Datetime" /></Fields>'),
+	(2, N'Представление', N'<Fields><Field id="1" caption="Коментарий" type="System.String" /><Field id="2" caption="Номер" type="System.String" /><Field id="3" caption="От" type="System.Datetime" /></Fields>'),
 	(3, N'Справка', N''),
 	(4, N'Удостоверение', N''),
 	(5, N'Копия военного билета', N''),

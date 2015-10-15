@@ -62,10 +62,10 @@ namespace Contingent.Api.DataAccess
             }
         }
 
-        private static string FormatFieldValuesToXml(List<object> fields)
+        private static string FormatFieldValuesToXml(Dictionary<string, string> fields)
         {
             var result = new XElement("Values");
-            result.Add(fields.Select(v => new XElement("Value", v, new XAttribute("field", "1"))));
+            result.Add(fields.Select(v => new XElement("Value", v.Value, new XAttribute("field", v.Key))));
             return result.ToString();
         }
     }
