@@ -106,8 +106,11 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProposalsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="DataAccess\FieldsXmlHelpers.cs" />
     <Compile Include="DataAccess\ProposalsLookups.cs" />
     <Compile Include="DataAccess\ProposalsRepository.cs" />
+    <Compile Include="Models\OrdersContext\ActionValues.cs" />
+    <Compile Include="Models\OrdersContext\FieldInfo.cs" />
     <Compile Include="Models\OrdersContext\ProposalEditModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -117,6 +120,7 @@
     <Compile Include="Models\OrdersContext\Profession.cs" />
     <Compile Include="Models\OrdersContext\ProposalReadModel.cs" />
     <Compile Include="Models\OrdersContext\Reason.cs" />
+    <Compile Include="Models\OrdersContext\ReasonValues.cs" />
     <Compile Include="Models\OrdersContext\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\SchedulerService.cs" />

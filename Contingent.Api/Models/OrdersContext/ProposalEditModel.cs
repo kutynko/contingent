@@ -13,22 +13,10 @@ namespace Contingent.Api.Models.OrdersContext
 
         [Required]
         [NumberOfElements(AtLeast = 1)]
-        public List<Action> Actions { get; set; }
+        public List<ActionValues> Actions { get; set; }
 
         [Required]
         [NumberOfElements(AtLeast = 1)]
-        public List<Reason> Reasons { get; set; }
-
-        public class Action
-        {
-            public int Id { get; set; }
-            public Dictionary<string, string> FieldValues { get; set; }
-        }
-
-        public class Reason
-        {
-            public int Id { get; set; }
-            public Dictionary<string, string> FieldValues { get; set; }
-        }
+        public List<ReasonValues> Reasons { get; set; }
     }
 }
