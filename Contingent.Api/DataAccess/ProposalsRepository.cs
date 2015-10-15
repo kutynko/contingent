@@ -23,17 +23,17 @@ namespace Contingent.Api.DataAccess
         {
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
             {
-                var grid = await connection.QueryMultipleAsync("select Id, Status, CreatedBy, CreatedOn from Proposals where Id=@id; " +
-                    "select StudentId from Proposals_2_Students where ProposalId=@id; " +
-                    "select ActionId, [Values] from Proposals_2_Actions where ProposalId=@id; " +
-                    "select ReasonId, [Values] from Proposals_2_Reasons where ProposalId = @id;", new { id = id });
+                var grid = await connection.QueryMultipleAsync(@"select Id, Status, CreatedBy, CreatedOn from Proposals where Id = @id
+select StudentId from Proposals_2_Students where ProposalId = @id
+select ActionId, [Values] from Proposals_2_Actions where ProposalId = @id
+select ReasonId, [Values] from Proposals_2_Reasons where ProposalId = @id;", new { id = id });
                 var result = grid.Read<ProposalReadModel>().FirstOrDefault();
 
                 if (result != null)
                 {
                     result.Students = grid.Read<Guid>().ToList();
-                    result.Actions = grid.Read<int, string, ActionValues>((fieldId, fields) => new ActionValues { Id = fieldId, FieldValues = FieldsXmlHelpers.ValuesFromXml(fields) }).ToList();
-                    result.Reasons = grid.Read<int, string, ReasonValues>((fieldId, fields) => new ReasonValues { Id = fieldId, FieldValues = FieldsXmlHelpers.ValuesFromXml(fields) }).ToList();
+                    result.Actions = grid.Read().Select(row => new ActionValues { Id = row.ActionId, FieldValues = FieldsXmlHelpers.ValuesFromXml(row.Values) }).ToList();
+                    result.Reasons = grid.Read().Select(row => new ReasonValues { Id = row.ReasonId, FieldValues = FieldsXmlHelpers.ValuesFromXml(row.Values) }).ToList();
                 }
 
                 return result;
