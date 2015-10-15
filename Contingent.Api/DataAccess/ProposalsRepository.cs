@@ -90,5 +90,13 @@ delete from Proposals_2_Reasons where ProposalId = @id;", new { id = id, status 
                 return await connection.ExecuteAsync("delete from Proposals where Id=@id;", new { id = id });
             }
         }
+
+        public async Task UpdateStatus(Guid id, int newStatus)
+        {
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString))
+            {
+                await connection.ExecuteAsync("update Proposals set Status=@newStatus where Id=@id", new { id = id, newStatus = newStatus });
+            }
+        }
     }
 }
